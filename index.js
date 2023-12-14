@@ -68,7 +68,7 @@ class Room {
 }
 
 class Item {
-    constructor(name) {
+    constructor(name, description) {
         this._name = name,
         this._description = description
     }
@@ -102,6 +102,8 @@ class Item {
         return `The ${this._name} is ${this._description}`
     }
 }
+
+
 
 // Character Mainclass
 class Character  {
@@ -185,9 +187,11 @@ class Zombie extends Character {
 }
 
 fight(item) {
-    if (item = this._weakness){
+    if (item == this._weakness){
+        alert("You have killed the zombie")
         return true
       } else {
+        alert("You have been eaten by the zombie")
         return false
       }
     }
@@ -208,49 +212,64 @@ balcony.linkRoom("West", bedRoom);
 balcony.linkRoom("North", basement);
 basement.linkRoom("South", balcony);
 basement.linkRoom("West", bedRoom);
-console.log(bedRoom._linkedRooms);
 
-
-function displayRoomInfo(room) {
-    let occupantMsg = ""
-    if (room.character === "") {
-      occupantMsg = ""
-    } else {
-      occupantMsg = room.character.describe() + ". " + room.character.converse()
-    }
-  
-    textContent = "<p>" + room.describe() + "</p>" + "<p>" +
-      occupantMsg + "</p>" + "<p>" + room.getDetails() + "</p>";
-  
-    document.getElementById("textarea").innerHTML = textContent;
-    document.getElementById("usertext").innerHTML = '><input type="text" id="usertext" />';
-    document.getElementById("usertext").focus();
-  }
-  
-  
-  function startGame() {
-    //set and display start room
-    currentRoom = livingRoom
-    console.log (currentRoom)
-    displayRoomInfo(currentRoom);
-  
+//Variable for item weapons
+const weapons = [
+    machete = new Item ("Machete", ""),
+    pistol = new Item ("Pistol", ""),
+    axe = new Item ("Axe", "")
+    ]
     
+//inventory
+const inventory = [];
+    for (let i of weapons) {
+        inventory.push(i.name)
+    }
+    console.log(inventory)
+
+
+
+
+
+// function displayRoomInfo(room) {
+//     let occupantMsg = ""
+//     if (room.character === "") {
+//       occupantMsg = ""
+//     } else {
+//       occupantMsg = room.character.describe() + ". " + room.character.talk()
+//     }
   
-    //handle commands
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        command = document.getElementById("usertext").value;
-        const directions = ["north", "south", "east", "west"]
-        if (directions.includes(command.toLowerCase())) {
-          currentRoom = currentRoom.move(command)
-          document.getElementById("usertext").value = ""
-          displayRoomInfo(currentRoom);
-        } else {
-          document.getElementById("usertext").value = ""
-          alert("that is not a valid command please try again")
-        }
+//     textContent = "<p>" + room.describe() + "</p>" + "<p>" +
+//       occupantMsg + "</p>" + "<p>" + room.directionDetails() + "</p>";
   
-      }
-    });
-  }
-  startGame();
+//     document.getElementById("textarea").innerHTML = textContent;
+//     document.getElementById("usertext").innerHTML = '><input type="text" id="usertext" />';
+//     document.getElementById("usertext").focus();
+//   }
+  
+  
+//   function startGame() {
+//     //set and display start room
+//     currentRoom = livingRoom
+//     console.log (currentRoom)
+//     displayRoomInfo(currentRoom);
+  
+//     //handle commands
+//     document.addEventListener("keydown", function (event) {
+//       if (event.key === "Enter") {
+//         command = document.getElementById("usertext").value;
+//         const directions = ["north", "south", "east", "west"]
+//         if (directions.includes(command.toLowerCase())) {
+//           currentRoom = currentRoom.move(command)
+//           document.getElementById("usertext").value = ""
+//           displayRoomInfo(currentRoom);
+//         } else {
+//           document.getElementById("usertext").value = ""
+//           alert("that is not a valid command please try again")
+//         }
+  
+//       }
+//     });
+//   }
+//   startGame();
+
