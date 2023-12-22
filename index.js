@@ -1,247 +1,343 @@
 class Room {
-    constructor(name, description, linkedRoom, character) {
-    this._name = name;
-    this._description = description;
-    this._linkedRooms = {}
-    this._character = character;
+    constructor(name) {
+      this._name = name;
+      this._description = "";
+      this._linkedRooms = {};
+      this._character = "";
+      this._items = [];
     }
+  
     get name() {
-        return this._name
+      return this._name;
     }
+  
     get description() {
-        return this.description
+      return this._description;
     }
+  
     get character() {
-        return this._character
+      return this._character
     }
+  
     set name(value) {
-        if (value.length < 4) {
-            alert("Name is too short");
-            return;
-        }
-        this._name = value
+      if (value.length < 4) {
+        alert("Name is too short.");
+        return;
+      }
+      this._name = value;
     }
+  
     set description(value) {
-        if (value.description < 4) {
-            alert("Description too short")
-            return;
-        }
-        this._description = value
+      if (value.length < 4) {
+        alert("Description too short");
+        return;
+      }
+      this._description = value;
     }
+  
     set character(value) {
-        this._character = value;
+      this._character = value;
     }
-    //Description of the room and its content
+  
     describe() {
-        return `Looking around the ${this._name} you can see ${this._description}`;
+      return `Looking around the ${this._name} you can see ${this._description} <br/> ` ;
     }
-    //Method to link rooms
+  
     linkRoom(direction, roomToLink) {
-        this._linkedRooms[direction] = roomToLink;
+      this._linkedRooms[direction] = roomToLink;
     }
-    //Method for the description of the linked rooms
-    directionDetails() {
-        const entries = Object.entries(this._linkedRooms);
-        let details = []
-        for (const [direction, room] of entries) {
-            let text = `The ${room._name} is to the ${direction}`
-            details.push(text);
-        }
-        return details;
+  
+    getDetails() {
+      const entries = Object.entries(this._linkedRooms);
+      let details = []
+      for (const [direction, room] of entries) {
+        let text = " The " + room._name + " is to the " + "<b>" + direction +"</b>"
+        details.push(text);
+      }
+      return details;
     }
-    //Method to move character to next room
+  
+    //method to move to a new room
     move(direction) {
-        if (direction in this._linkedRooms) {
-            return this._linkedRooms[direction];
-        } else {
-            alert("You can't go this way",);
-            alert(this._name)
-            return this;
-        }
-     }
-}
-class Item {
-    constructor(name, description) {
-        this._name = name,
-        this._description = description
+      if (direction in this._linkedRooms) {
+        return this._linkedRooms[direction];
+      } else {
+        alert("You can't go that way",);
+        return this; 
+      }
+    }
+
+    addItem(item) {
+        this._items.push(item);
+    }
+
+    getItems() {
+        return this._items;
+    }
+  }
+  let inventory = [];
+
+  class Item {
+    constructor(name) {
+      this._name = name;
+      this._description = "";
+    }
+  
+    set name(value) {
+      if (value.length < 4) {
+        alert("Name is too short.");
+        return;
+      }
+      this._name = value;
+    }
+  
+    set description(value) {
+      if (value.length < 4) {
+        alert("Decription is too short.");
+        return;
+      }
+      this._description = value;
+    }
+  
+    get name() {
+      return this._name;
+    }
+  
+    get description() {
+      return this._description;
+    }
+  
+    describe() {
+      return "The " + this._name + " is " + this._description;
+    }
+    
+    }
+
+  
+  class Character {
+    constructor(name) {
+      this._name = name,
+      this._description = ""
+      this._conversation = ""
     }
     set name(value) {
-        if (value.length < 4) {
-            alert("Name is too short");
-            return;
-        }
-        this._name = value;
+      if (value.length < 4) {
+        alert("Name is too short.");
+        return;
+      }
+      this._name = value;
     }
+  
     set description(value) {
-        if (value < 4) {
-            alert("Description is too short");
-            return;
-        }
-        this.name = value;
+      if (value.length < 4) {
+        alert("Decription is too short.");
+        return;
+      }
+      this._description = value;
+    }
+  
+    set conversation(value) {
+      if (value.length < 4) {
+        alert("conversation is too short.");
+        return;
+      }
+      this._conversation = value;
     }
     get name() {
-        return this._name
+      return this._name;
     }
+  
     get description() {
-        return this._description
+      return this._description;
     }
-    //Method to describe item
+  
+    get conversation() {
+      return this._conversation;
+    }
+  
     describe() {
-        return `The ${this._name} is ${this._description}`
+      return "You have met " + this._name + ", " + this._name + " is " + this._description;
     }
-}
-// Character Mainclass
-class Character  {
-    constructor(name, description, conversation) {
-        this._name = name;
-        this._description = description;
-        this._conversation = conversation;
+  
+    converse() {
+      return this._name + " says " + "'" + this._conversation + "'";
     }
-    set name(value) {
-        if (value.length < 4) {
-          alert("Name is too short.");
-          return;
-        }
-        this._name = value;
-      }
-      set description(value) {
-        if (value.length < 4) {
-          alert("Decription is too short.");
-          return;
-        }
-        this._description = value;
-      }
-      set conversation(value) {
-        if (value.length < 4) {
-          alert("conversation is too short.");
-          return;
-        }
-        this._conversation = value;
-      }
-      get name() {
-        return this._name;
-      }
-      get description() {
-        return this._description;
-      }
-      get conversation() {
-        return this._conversation;
-      }
-    //Method for NPC description
-    describe() {
-        return `You have met an survivor, ${this._name}, they are ${this._description}`
-    }
-    //Method for conversation with NPC
-    talk() {
-        return `${this._name} says ${this._conversation}`
-    }
-}
-// NPC subclass
-class Survivor extends Character {
-    constructor(name, description, conversation) {
-        super(name, description, conversation)
-    }
-    name() {
-        return this._name
-    }
-    describe() {
-        return this._description
-    }
-    talk() {
-        return this._conversation
-    }
-}
-// Enemy subclass
-class Zombie extends Character {
-    constructor(name, description, weakness) {
-        super(name, description);
-        this._weakness = weakness;
-}
-fight(item) {
-    if (item == this._weakness){
-        alert("You have killed the zombie")
-        return true
-      } else {
-        alert("You have been eaten by the zombie")
-        return false
-      }
-    }
-
-    describe() {
-        return "The zombie charges at you"
-    }
-
-    talk() {
-        return "You need to react quick or be eaten alive!"
-    }
-
-}
-//Variables to hold the seperate rooms
-const livingRoom = new Room("Living Room","John,","livingRoom", "");
-const bedRoom = new Room("Bedroom", "Hannah,","bedRoom", "");
-const balcony = new Room("Balcony", "an infected climbing up.", "He will eat you", "");
-const basement = new Room("basement", "an rusty machete.", "", "");
-//Link the rooms together
-livingRoom.linkRoom("South", bedRoom);
-livingRoom.linkRoom("East", balcony);
-bedRoom.linkRoom("North", livingRoom);
-bedRoom.linkRoom("East", balcony);
-balcony.linkRoom("West", bedRoom);
-balcony.linkRoom("North", basement);
-basement.linkRoom("South", balcony);
-basement.linkRoom("West", bedRoom);
-
-livingRoom._character = new Survivor("John", "a survivor", "He says I have been hiding here for a while, I have a pistol if you want it");
-bedRoom._character = new Survivor("Hannah", "another survivor", "She is injured and offers you her axe.");
-balcony._character = new Zombie("Zombie", "He will eat you", "" )
-basement._item = new Item ("Machete")
-
-//Variable for item weapons
-const weapons = [
-    machete = new Item ("Machete", ""),
-    pistol = new Item ("Pistol", ""),
-    axe = new Item ("Axe", "")
-    ]
-
-//inventory
-const inventory = [];
-    for (let i of weapons) {
-        inventory.push(i.name)
-    }
-    console.log(inventory)
-
-function displayRoomInfo(room) {
-    console.log(room)
-    let occupantMsg = ""
-    if (room._character === "") {
-      occupantMsg = ""
-    } else {
-      occupantMsg = room._character.describe() + ". " + room._character.talk()
-    }
-    textContent = "<p>" + room.describe() + "</p>" + "<p>" +
-      occupantMsg + "</p>" + "<p>" + room.directionDetails() + "</p>";
-    document.getElementById("textarea").innerHTML = textContent;
-    document.getElementById("usertext").innerHTML = '><input type="text" id="usertext" />';
-    document.getElementById("usertext").focus();
   }
+  
+
+  
+  //create the indiviual room objects and add their descriptions
+  const balcony = new Room("Balcony");
+  balcony.description = "its been abandoned for quite a while now, or so it seems...";
+  const kitchen = new Room("Kitchen");
+  kitchen.description = "its already been looted, the only thing left are the roaches";
+  const bedroom = new Room("Bedroom");
+  bedroom.description = "nothing much left of the bedroom, just a bed and a computer, no use with this. The electricity got cut off at the start of the pandemic";
+  const basement = new Room("Basement");
+  basement.description = "a room which is dark and there seems to be an odd smell coming from there.";
+  const StorageCupboard = new Room("Storage Cupboard")
+  StorageCupboard.description = "the storage room has mostly been ransacked although there is an <b>hammer</b> lying there behind the door that you could <b>pick up</b>.";
+  
+  const npc = new Character("John");
+  balcony.character = (npc);
+
+  const Security = new Character("A Security Guard");
+  basement.character = (Security);
+  Security.conversation = "Only authorised personel should be here, who are you?";
+
+  npc.description = "a survivor, you and him manage to escape the quarantine camp which got overun by the infected";
+  npc.conversation = "We barely made it out of there alive, my leg is messed up from climbing up here. You are going to have to check the apartment out yourself"
+  
+  const IDbadge = new Item("hammer")
+  StorageCupboard.addItem(IDbadge);
+  //link the rooms together
+  balcony.linkRoom("north", kitchen);
+  kitchen.linkRoom("east", bedroom);
+  kitchen.linkRoom("south", balcony);
+  bedroom.linkRoom("west", kitchen);
+  bedroom.linkRoom("north", basement);
+  basement.linkRoom("south", bedroom);
+  balcony.linkRoom("west", StorageCupboard);
+  StorageCupboard.linkRoom("east", balcony);
+
+  
+  
+  function inInventory(newItem) {
+    const userInput = document.getElementById("usertext").value;
+    let pickupMessage = "";
+ 
+    if(userInput.toLowerCase().includes(`pick up ${newItem.toLowerCase()}`)){
+        inventory.push(newItem);
+        console.log(`${newItem} has been added`);
+        pickupMessage = `You picked up ${newItem}. It has been added to your inventory.`;
+        console.log(pickupMessage)
+      
+    } 
+       return pickupMessage
+    }
+
+    
+    let isWinOrLoseScreen = false;
+
+
+
+   function displayRoomInfo(room) {
+    let occupantMsg = "";
+    isWinOrLoseScreen = false;
+    toggleInputBox();
+    
+    if (room.character === "") {
+      occupantMsg = ""
+    
+    } else if(room === basement && inventory.includes("hammer")) {
+      occupantMsg = "You're greeted by armed security personel" + ". " + room.character.converse() + "<p> <br>" +
+      "You can leave and go back <b>south</b> to the Underground Tunnel, or try your luck and <b>show</b> the <b>hammer</b> you found." + "</p> <br>";
+    
+    } else if(room === basement) {
+      occupantMsg = "You're greeted by armed security personel" + ". " + room.character.converse() + "<br></br>"
+    
+    } else {
+  
+      occupantMsg = room.character.describe() + ". " + room.character.converse()
+    }
+  
+    let textContent = "<p>" + room.describe() + "</p>" + "<p>" +
+      occupantMsg + "</p>" + "<p>" + room.getDetails().join("<br/>") + "</p>";
+
+  
+    document.getElementById("textarea").innerHTML = textContent;
+  }
+
+  
+
+  function showWin() {
+    document.getElementById("textarea").innerHTML = "<p id='textarea' class='text-center leading-loose text-3xl md:text-4xl md:leading-loose lg:text-5xl lg:leading-loose'>" + "WELL DONE! YOU HAVE SUCCESSFULLY INFILTRATED THE ENEMY!" +  "</p>" + "<br><button id='startButton' class='bg-white py-2 px-4 my-auto border-black rounded-md hover:bg-gray-700 hover:text-white'>Start Game</button>";
+    document.getElementById("startButton").addEventListener("click", () => window.location.reload());
+    isWinOrLoseScreen = true;
+    toggleInputBox();
+  }
+
+  function showLose() {
+    document.getElementById("textarea").innerHTML = "<p id='textarea' class='text-center my-auto leading-loose text-3xl md:text-4xl md:leading-loose lg:text-5xl lg:leading-loose'>" + "YOU'VE BEEN CAUGHT! <br> There were armed security on the door and your current ID doesn't authorise you to enter this room" + "</p>" + "<br><button id='startButton' class='bg-white py-2 px-4 my-auto border-black rounded-md hover:bg-gray-700 hover:text-white'>Try Again</button>";
+    document.getElementById("startButton").addEventListener("click", () => window.location.reload());
+    isWinOrLoseScreen = true;
+    toggleInputBox();
+  }
+  
+  // let showInputBox = true;
+    function toggleInputBox(){
+      if(!isWinOrLoseScreen) {
+        // showInputBox = true;
+        document.getElementById("usertext").innerHTML = '><input type="text" id="usertext" />';
+        document.getElementById("usertext").focus(); 
+        } else if (isWinOrLoseScreen) {
+          // showInputBox = false;
+          document.getElementById("usertext").classList.add("invisible");
+        }
+    }
+
+ 
   function startGame() {
+    document.getElementById("usertext").classList.remove("invisible"); 
+
+
+    
+    
     //set and display start room
-    currentRoom = livingRoom
-    console.log (currentRoom)
+    currentRoom = balcony;
+    console.log (currentRoom);
     displayRoomInfo(currentRoom);
+    isWinOrLoseScreen = false;
+    isAudioPlaying = true;
+    
+  
     //handle commands
     document.addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
         command = document.getElementById("usertext").value;
-        const directions = ["north", "south", "east", "west"]
+        const directions = ["north", "south", "east", "west"];
+
         if (directions.includes(command.toLowerCase())) {
           currentRoom = currentRoom.move(command)
+          console.log("After Move:", currentRoom.name)
           document.getElementById("usertext").value = ""
           displayRoomInfo(currentRoom);
-        } else {
+          if(currentRoom === basement && !inventory.includes("hammer")){
+            showLose();
+          }
+        } else if(command.toLowerCase().startsWith("pick up")){
+            const pickItem = command.substring(8).trim();
+            console.log("this is getting called here")
+            const val = inInventory(pickItem);
+            console.log(val)
+            document.getElementById("notificationUser").innerHTML = val;
+            document.getElementById("usertext").value = "";
+            displayRoomInfo(currentRoom);
+         } 
+        else if(command.toLowerCase().startsWith("show")) {
+          document.getElementById("notificationUser").innerHTML = "<p id='notificationUser' class='text-2xl mt-16 md:text-3xl md:leading-loose lg:text-4xl font-bold text-center animate__animated animate__fadeIn' >Click Start to play again</p>";
+            
+          
+          setTimeout(() => {
+                document.getElementById("notificationUser").innerHTML = "";
+            }, 10000);
+            document.getElementById("usertext").value = "";
+            showWin();
+           
+            // displayRoomInfo(currentRoom);
+
+        } else if (command.toLowerCase() === "Bedroom") {
+          currentRoom = bedroom;
+          inventory.push("hammer");
+          document.getElementById("usertext").value = "";
+          displayRoomInfo(currentRoom);
+
+        }
+        else {
           document.getElementById("usertext").value = ""
           alert("that is not a valid command please try again")
         }
+  
       }
     });
   }
